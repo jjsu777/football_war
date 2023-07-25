@@ -1,0 +1,241 @@
+body {
+    font-family: Arial, sans-serif;
+}
+header {
+    background-color: rgb(255, 255, 255);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+header img {
+    max-width: 70px;
+    height: auto;
+  }
+.logo {
+    background-image: url("../images/site_logo_image.png");
+    background-size: cover; 
+    width: 100px; 
+    height: 100px; 
+  }
+  
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    gap: 15px;
+}
+.banner {
+    background-image: url("../images/main_banner_image.jpeg");
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    height: 300px; 
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    color: white; 
+}
+
+.banner-content {
+    text-align: center;
+}
+.tabs {
+    background-color: #ffffff;
+    padding: 10px 0;
+}
+
+.tabs ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tabs li {
+    margin: 0 10px;
+}
+
+.tabs li a {  /* 탭 크기 */
+    text-decoration: none;
+    color: #000;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    width: 300px;    
+    text-align: center;   
+    display: inline-block; /*a 태그의 기본 display 속성이 inline 이 요소는 width 속성을 무시*/  
+}
+
+.tabs li a:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+    * {
+    margin: 0;
+    padding: 0;
+    }
+
+    html {
+    font-size: 10px;
+    }
+
+    ul, 
+    li {
+    list-style: none;
+    }
+
+    a {
+    text-decoration: none;
+    color:
+    inherit;
+    /*  컬러 상속받아라 */
+    }
+    .board_wrap {
+    width: 1000px;
+    margin: 100px auto;
+    }
+    .board_title {
+    margin-bottom: 30px;
+    }
+    .board_title strong {
+    font-size: 3rem;
+    }
+
+    .board_title p {
+    margin-top: 5px; font-size: 1.4rem;
+    }
+
+    .bt_write {
+    margin-top: 30px; 
+    text-align: center;
+    font-size: 0;
+    text-align: center;
+    }
+
+    .bt_write a {
+    display: inline-block;
+    min-width: 80px; 
+    margin-left: 10px; 
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 2px; 
+    font-size: 1.4rem;
+    }
+
+    .bt_write a:first-child {
+    margin-left: 0;
+    }
+    
+    .bt_write a.on {
+    background: #000;
+    color: #fff;
+    }
+    .board_list {
+    width: 100%;
+    border-top: 2px solid #000;
+    }
+
+    .board_list > div {
+    border-bottom: 1px solid #ddd;
+    font-size: 0;
+    }
+
+    .board_list > div.top { 
+    border-bottom: 1px solid #999;
+    }
+    
+    .board_list > div:last-child {
+    border-bottom: 1px solid #000;
+    }
+
+    .board_list > div > div {
+    display: inline-block;
+    /* 가로배치 */
+    padding: 15px 0;
+    /* 모든 픽셀 여백 15px 0 */
+    text-align: center; font-size: 1.4rem;
+    /*부모에다가는 font-size : N을 중. */
+    }
+    .board_list > div.top > div {
+    font-weight: 600;
+    }
+
+    .board_list .num { 
+    width: 10%;
+    }
+    /* 번호칸이 10%의 영역을 가지게 된다.*/
+
+    .board_list .title {
+    width: 60%;
+    text-align: left;
+    }
+    .board_list .top .title {
+    text-align: center;
+    }
+
+    .board_list .writer {
+        width: 10%;
+        }
+        .board_list .date {
+        width: 10%;
+        }
+        .board_list .count {
+        width: 10%;
+        }
+
+        .board_page {
+        margin-top: 30px;
+        /*위로 여백 */ 
+        text-align: center;
+        /*가운데정렬로 */ 
+        font-size: 0;
+        /* 페이지 순서 박스 사이의 여백 없애기 */
+        }
+
+        .board_page a {
+        display: inline-block;
+        width: 32px;
+        height: 32px;
+        box-sizing: border-box;
+        /*board_page a. bt과 num 에 패딩값을 넣게 되면서 상자가 길어지게 되는데, 이를 방지 하기 위해서 이 피 을 넘지 말아라 하는 코딩부분(전체높이 32px를 넘지 않게 */ 
+        vertical-align: middle;
+        /* 박스 높낮이 같게 */
+        border: 1px solid #ddd;
+        border-left: 0; 
+        line-height: 100%;
+        }
+
+        .board_page a.bt {
+        padding-top: 10px; 
+        font-size: 1.2rem; 
+        letter-spacing: -1px;
+        }
+        .board_page a.num {
+        padding-top: 9px; 
+        font-size: 1.4rem;
+        }
+
+        .board_page a.num.on {
+        border-color: #000; 
+        background: #000;
+        color: #fff;
+        }
+
+        .board_page a:first-child {
+            border-left: 1px solid #ddd;
+        }
+
+        .board-controls {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .board-search {
+            position: left;
+            margin-top: 5px;
+            margin-left: 10px;
+            margin-right: 20px; /* 원하는 간격으로 조정하세요. */
+        }        

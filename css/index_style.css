@@ -1,0 +1,169 @@
+html {
+    font-size: 10px;
+    }
+
+body {
+    font-family: Arial, sans-serif;
+}
+header {
+    background-color: rgb(255, 255, 255);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+header img {
+    max-width: 70px;
+    height: auto;
+  }
+.logo {
+    background-image: url("../images/site_logo_image.png");
+    background-size: cover; 
+    width: 100px; 
+    height: 100px; 
+  }
+  
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    gap: 15px;
+}
+.banner {
+    background-image: url("../images/main_banner_image.jpeg");
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    height: 300px; 
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    color: white; 
+}
+
+.banner-content {
+    text-align: center;
+}
+.tabs {
+    background-color: #ffffff;
+    padding: 10px 0;
+}
+
+.tabs ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tabs li {
+    margin: 0 10px;
+}
+
+.tabs li a {  /* 탭 크기 */
+    text-decoration: none;
+    color: #000;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    width: 300px;    
+    text-align: center;   
+    display: inline-block; /*a 태그의 기본 display 속성이 inline 이 요소는 width 속성을 무시*/  
+}
+
+.tabs li a:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+/*왼쪽 오른쪽 공간 나누기*/ 
+.container {
+    display: flex;
+    justify-content: space-between;
+}
+
+/*왼쪽 섹션*/ 
+.left-section {
+    flex: 2;
+    padding: 20px;
+    border: 1px solid #ccc;
+  }
+  /*오른쪽 섹션*/
+  .right-section {
+    flex: 8;
+    padding: 20px;
+    border: 1px solid #ccc;
+  }
+
+  .board-list {
+    background-color: #ffffff;
+    margin-top: 20px; /* 로그인 폼과의 간격 설정 */
+    padding: 10px;
+    border: 1px solid #f1f3f5; /* 게시판 목록을 감싸는 테두리 */
+}
+
+.board-list h2 {
+    font-size: 1.2em; /* 게시판 제목의 크기 */
+    margin-bottom: 10px; /* 제목과 목록 사이의 간격 */
+}
+
+.board-list ul {
+    list-style-type: none; /* 목록 표시 제거 */
+    padding-left: 0; /* 목록 왼쪽 여백 제거 */
+}
+
+.board-list ul li {
+    margin-bottom: 5px; /* 목록 항목 사이의 간격 */
+}
+
+.board-list ul li a {
+    text-decoration: none; /* 링크 밑줄 제거 */
+    color: #333; /* 링크 색상 */
+}
+
+.news {
+    flex: 3;  /* 로그인 폼에 비해 뉴스 섹션의 가로 크기 비율 늘리기 */
+    margin-left: 20px;  /* 로그인 폼과 뉴스 섹션 사이에 간격 주기 */
+    display: flex;
+    justify-content: space-between;
+}
+
+.news-item {
+    text-decoration: none; /* 링크 밑줄 제거 */
+    color: #333; /* 링크 색상 */
+    flex: 1;  /* 각 뉴스 항목이 .news 섹션의 가용 공간을 동일하게 분배 */
+    margin: 0 10px;  /* 좌우 간격을 추가해 뉴스 항목 사이에 공간 */
+    padding: 10px;  /* 뉴스 항목 내부의 여백 추가 */
+    box-sizing: border-box;  /* padding과 border가 width와 height에 포함 */
+    overflow-wrap: break-word;  /* 긴 단어가 박스를 넘어서지 않도록 처리 */
+}
+.topic {
+    display: flex;
+    justify-content: space-between;
+}
+
+.hot-topic, .free-board {
+    flex: 1;
+    margin: 0 10px;  /* 좌우 간격을 추가해 뉴스 항목 사이에 공간 */
+    padding: 10px;  /* 뉴스 항목 내부의 여백 추가 */
+    box-sizing: border-box;  /* padding과 border가 width와 height에 포함 */
+    overflow-wrap: break-word;  /* 긴 단어가 박스를 넘어서지 않도록 처리 */
+}
+
+.hot-topic {
+    margin-left: 40px;  /* 로그인 폼과 뉴스 섹션 사이에 간격 주기 */
+    margin-top: 150px;  /* 로그인 폼과 뉴스 섹션 사이에 간격 주기 */
+}
+
+.free-board {
+    margin-left: 40px;  /* 로그인 폼과 뉴스 섹션 사이에 간격 주기 */
+    margin-top: 150px;  /* 로그인 폼과 뉴스 섹션 사이에 간격 주기 */
+}
+
+.battleground-board {
+    flex: 3;  /* 로그인 폼에 비해 뉴스 섹션의 가로 크기 비율 늘리기 */
+    margin-left: 20px;  /* 로그인 폼과 뉴스 섹션 사이에 간격 주기 */
+    display: flex;
+    justify-content: space-between;
+
+}

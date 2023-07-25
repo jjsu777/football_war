@@ -1,0 +1,103 @@
+html {
+    font-size: 10px;
+    }
+
+body {
+    font-family: Arial, sans-serif;
+}
+header {
+    background-color: rgb(255, 255, 255);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+header img {
+    max-width: 70px;
+    height: auto;
+  }
+.logo {
+    background-image: url("../images/site_logo_image.png");
+    background-size: cover; 
+    width: 100px; 
+    height: 100px; 
+  }
+  
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    gap: 15px;
+}
+.banner {
+    background-image: url("../images/main_banner_image.jpeg");
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    height: 300px; 
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    color: white; 
+}
+
+.banner-content {
+    text-align: center;
+}
+.tabs {
+    background-color: #ffffff;
+    padding: 10px 0;
+}
+
+.tabs ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tabs li {
+    margin: 0 10px;
+}
+
+.tabs li a {  /* 탭 크기 */
+    text-decoration: none;
+    color: #000;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    width: 300px;    
+    text-align: center;   
+    display: inline-block; /*a 태그의 기본 display 속성이 inline 이 요소는 width 속성을 무시*/  
+}
+
+.tabs li a:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+.choice-team {
+    width: 300px;
+    margin: 0 auto;
+  }
+
+  .choice-team form {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .team-options {
+    width: 500px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+  }
+
+  .submit-button {
+    width: 100px;
+    margin-top: 20px;
+}
+

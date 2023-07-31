@@ -60,11 +60,11 @@ while ($row = $result->fetch_assoc()) {
    <!-- 게시판 섹션 시작 -->
 <div class="board_wrap">
     <div class="board_title">
-        <Strong>DMZ 공동경비구역</Strong>
-        <p>자유롭게 이야기하는 곳</p>
+        <Strong>게시글 작성</Strong>
+        <p>해외축구는 전쟁이다.</p>
     </div>
    
-    <form action="write_input.php" method="POST">
+    <form action="write_input.php" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="board_id" value="<?php echo $_GET['board_id']; ?>">
        <div class ="board_write_wrap">
             <div class="board_write">
@@ -72,6 +72,7 @@ while ($row = $result->fetch_assoc()) {
                     <dl>
                         <dt>제목</dt>
                         <dd><input type="text" name="title" placeholder="제목 입력" /></dd>
+                        
                     </dl>
                 </div>
                 <div class="info">
@@ -82,10 +83,16 @@ while ($row = $result->fetch_assoc()) {
                                 <option value="">선택하세요</option>
                                 <?php foreach ($teams as $team) : ?>
                                     <option value="<?php echo $team['team_id']; ?>"><?php echo $team['team_name']; ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </dd>
-                    </dl>
+                                <?php endforeach; ?>     
+                                </select>
+                            </dd>
+                            </dl>
+                                <dl>
+                        <dt>이미지 업로드</dt>
+                    <dd>
+                    <input type="file" name="fileToUpload">
+                     </dd>
+            </dl>
                 </div>
                 <div class="cont">
                     <textarea name="content" placeholder="내용입력"></textarea>

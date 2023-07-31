@@ -50,11 +50,11 @@ if ($conn->connect_error) {
    <!-- 게시판 섹션 시작 -->
 <div class="board_wrap">
     <div class="board_title">
-        <Strong>DMZ 공동경비구역</Strong>
-        <p>자유롭게 이야기하는 곳</p>
+        <Strong>뉴스 올리기</Strong>
+        <p>관리자 뉴스 작성 폼</p>
     </div>
    
-    <form action="write_input.php" method="POST">
+    <form action="write_input.php" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="board_id" value="<?php echo $_GET['board_id']; ?>">
        <div class ="board_write_wrap">
             <div class="board_write">
@@ -65,10 +65,11 @@ if ($conn->connect_error) {
                     </dl>
                 </div>
                 <div class="info">
-                    <dl>
-                        <dt>이미지 올리기</dt>
-                        <dd>
-                        <select name="image">
+                <dl>
+                        <dt>이미지 업로드</dt>
+                    <dd>
+                    <input type="file" name="team_image">
+                     </dd>
 
                             </select>
                         </dd>

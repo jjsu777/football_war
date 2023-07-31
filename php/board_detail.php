@@ -11,7 +11,7 @@ if ($conn->connect_error) {
 $post_id = $_GET["post_id"];
 
 // 게시글 쿼리 
-$postsSql = "SELECT P.post_id, P.post_title, P.team_id, P.post_content, M.member_name, P.post_date, P.post_views FROM Posts P INNER JOIN Member M ON P.member_id = M.member_id WHERE P.post_id = ?";
+$postsSql = "SELECT P.post_id, P.post_title, P.team_id, P.post_content, p.image_path, M.member_name, P.post_date, P.post_views FROM Posts P INNER JOIN Member M ON P.member_id = M.member_id WHERE P.post_id = ?";
 $postsStmt = $conn->prepare($postsSql);
 $postsStmt->bind_param("i", $post_id);
 $postsStmt->execute();
@@ -91,8 +91,10 @@ $row = $result->fetch_assoc();
                 <div class="cont">
                 <dl>
                         <dd>
-                        <?php
-                       echo $row["post_content"]; // member_name 출력
+                        <img class="post-image" src="<?php echo $row["image_path"]; ?>" alt="Image Description"> <!-- 이미지 출력 -->
+            <?php
+           
+                       echo $row["post_content"]; // 본문 출력
                    ?>
                    </dd>
                         </dl>

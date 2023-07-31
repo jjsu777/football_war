@@ -111,6 +111,13 @@
             <a href="news1.html">
                 <h2>최신 뉴스1</h2>
                 <p>뉴스 이미지가 여기에 표시</p>
+                <?php
+            if (isset($_SESSION['member_admin']) && $_SESSION['member_admin'] == true) {
+        ?>
+        <a href="admin_news_write.php"><button>관리자 버튼</button></a>
+        <?php
+            }
+        ?>
             </a>
         </div>
 
@@ -133,6 +140,13 @@
             <a href="news3.html">
                 <h2>최신 뉴스3</h2>
                 <p>뉴스 이미지가 여기에 표시</p>
+                <?php
+            if (isset($_SESSION['member_admin']) && $_SESSION['member_admin'] == true) {
+        ?>
+        <a href="admin_news_write.php"><button>관리자 버튼</button></a>
+        <?php
+            }
+        ?>
             </a>
         </div>
     </div>

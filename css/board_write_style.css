@@ -284,7 +284,6 @@ a {
   border-top: 1px dashed #ddd;
   border-bottom: 1px solid #000;
   font-size: 0;
-  /*🟠설명은 html 파일에*/
 }
 
 .board_write .title dl {
@@ -323,7 +322,6 @@ a {
 }
 
 .board_write .title input[type="text"] {
-  /*🟡⛔input 은 css 에서 타입을 지정해 줄 수가 있다. 위처럼   4강 18:15    */
 
   width: 80%;
 }
@@ -332,7 +330,7 @@ a {
   border-bottom: 1px solid #000;
 }
 
-/*⛔4강 9분 01초... 왜 안되지*/
+
 .board_write .cont textarea {
   display: block;
   width: 100%;
@@ -340,4 +338,9 @@ a {
   box-sizing: border-box;
   border: 0;
   resize: vertical;
+}
+
+.post-image {
+  max-width: 50%; /* or any other percentage or pixel value you want */
+  height: 50%;
 }

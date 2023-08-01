@@ -42,6 +42,7 @@ $postsStmt->execute();
 $result = $postsStmt->get_result();
 
 
+
 // $stmt = $conn->prepare("SELECT post_id, post_title, post_content, member_id, post_date, post_views FROM Posts");
 // $stmt->execute();
 // $result = $stmt->get_result();
@@ -92,8 +93,8 @@ $result = $postsStmt->get_result();
 <!-- 게시판 섹션 시작 -->
 <div class="board_wrap">
     <div class="board_title">
-        <Strong>뉴스</Strong>
-        <p>해축뉴스</p>
+        <Strong>아스날 본진</Strong>
+        <p>아스날 작전실</p>
     </div>
     <div class="board_list_wrap">
         <div class="board_list">
@@ -105,29 +106,29 @@ $result = $postsStmt->get_result();
                 <div class="count">조회</div>
             </div>
             <?php
-            session_start();  // 세션 시작
-            $count = 0; //카운트 변수
-            while($row = $result->fetch_assoc()) {
-                $team_stmt = $conn->prepare("SELECT team_name FROM Teams WHERE team_id = ?");
-                $team_stmt->bind_param("i", $row["team_id"]);
-                $team_stmt->execute();
-                $team_result = $team_stmt->get_result();
-                $team_name = $team_result->fetch_assoc()["team_name"];
-            
-                $postNumber = $totalPosts - (($page - 1) * $perPage + $count); // 게시글 고유 번호 계산
-            
-                echo "<div>";
-                echo "<div class='num'>" . $postNumber . "</div>"; //카운트값 출력 
-                echo "<div class='title'><a href='board_detail.php?post_id=" . $row["post_id"] . "&board_id=" . $board_id . "'>[" . $team_name . "] " . $row["post_title"] . "</a></div>"; // post_id와 board_id 추가
-                echo "<div class='writer'>" . $row["member_name"] . "</div>"; // member_name 출력
-                echo "<div class='date'>" . $row["post_date"] . "</div>";
-                echo "<div class='count'>" . $row["post_views"] . "</div>";
-                if (isset($_SESSION['member_admin']) && $_SESSION['member_admin'] == true) {
-                 echo "<div class='delete'><a href='post_delete.php?post_id=" . $row["post_id"] . "'>Delete</a></div>"; // 관리자인 경우에만 삭제 링크 표시
-             }
-                echo "</div>";
-                $count++;
+             session_start();  // 세션 시작
+           $count = 0; //카운트 변수
+           while($row = $result->fetch_assoc()) {
+               $team_stmt = $conn->prepare("SELECT team_name FROM Teams WHERE team_id = ?");
+               $team_stmt->bind_param("i", $row["team_id"]);
+               $team_stmt->execute();
+               $team_result = $team_stmt->get_result();
+               $team_name = $team_result->fetch_assoc()["team_name"];
+           
+               $postNumber = $totalPosts - (($page - 1) * $perPage + $count); // 게시글 고유 번호 계산
+           
+               echo "<div>";
+               echo "<div class='num'>" . $postNumber . "</div>"; //카운트값 출력 
+               echo "<div class='title'><a href='board_detail.php?post_id=" . $row["post_id"] . "&board_id=" . $board_id . "'>[" . $team_name . "] " . $row["post_title"] . "</a></div>"; // post_id와 board_id 추가
+               echo "<div class='writer'>" . $row["member_name"] . "</div>"; // member_name 출력
+               echo "<div class='date'>" . $row["post_date"] . "</div>";
+               echo "<div class='count'>" . $row["post_views"] . "</div>";
+               if (isset($_SESSION['member_admin']) && $_SESSION['member_admin'] == true) {
+                echo "<div class='delete'><a href='post_delete.php?post_id=" . $row["post_id"] . "'>Delete</a></div>"; // 관리자인 경우에만 삭제 링크 표시
             }
+               echo "</div>";
+               $count++;
+           }
             ?>
         </div>
             </div>
@@ -145,27 +146,23 @@ $result = $postsStmt->get_result();
 
             <div class="board-controls">
                 <div class="bt_write">
-    <?php
-        $board_id = $_GET["board_id"];  // URL의 board_id 값을 갯
-        if (isset($_SESSION['member_admin']) && $_SESSION['member_admin'] == true) {
-    ?>
-           <a href="board_write.php?board_id=<?php echo $board_id; ?>" class="on">글쓰기</a>
-    <?php
-        }
-    ?>
+                <?php
+                    $board_id = $_GET["board_id"];  // URL의 board_id 값을 갯
+                ?>
+                    <a href="board_write.php?board_id=<?php echo $board_id; ?>" class="on">글쓰기</a>
+                </div>
+
+                </div>
+                <div class="board-search">
+                    <form action="#">
+                        <input type="text" placeholder="검색...">
+                        <button type="submit">검색</button>
+                    </form>
+                </div>
+            </div>
+            </div>
+        </div>
     </div>
-
-</div>
-<div class="board-search">
-    <form action="#">
-        <input type="text" placeholder="검색...">
-        <button type="submit">검색</button>
-    </form>
-</div>
-</div>
-</div>
-</div>
-
     <!-- 게시판 섹션 끝 -->
 
 <footer>

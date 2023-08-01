@@ -114,12 +114,19 @@
         if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
         }
-        $sql = "SELECT post_id, image_path FROM Posts ORDER BY post_id DESC LIMIT 1 OFFSET 0";  // 첫 번째 최신 뉴스
+        $sql = "SELECT p.post_id, p.image_path, p.BoardID  
+        FROM Posts AS p
+        JOIN Board_list AS bl ON p.BoardID = bl.BoardID
+        JOIN Board_category AS bc ON bl.CategoryID = bc.CategoryID
+        WHERE bl.BoardID = 20 AND bc.CategoryID = 8 
+        ORDER BY p.post_id DESC 
+        LIMIT 1 OFFSET 0"; 
         $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_assoc($result);
         $image_path = $row['image_path'];
         ?>
-        <a href="board_detail.php?post_id=<?php echo $row['post_id']; ?>">
+     <a href="board_detail.php?post_id=<?php echo $row['post_id']; ?>&board_id=<?php echo $row['BoardID']; ?>">
+
             <h2>최신 뉴스1</h2>
             <p>
                 <img src="<?php echo $image_path ?>" alt="News Image" style="width: 200px; height: 200px;">
@@ -140,8 +147,13 @@
     if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
     }
-    $sql = "SELECT post_id, image_path FROM Posts ORDER BY post_id DESC LIMIT 1 OFFSET 1";  // 두 번째 최신 뉴스
-    $result = mysqli_query($conn, $sql);
+    $sql = "SELECT p.post_id, p.image_path 
+    FROM Posts AS p
+    JOIN Board_list AS bl ON p.BoardID = bl.BoardID
+    JOIN Board_category AS bc ON bl.CategoryID = bc.CategoryID
+    WHERE bl.BoardID = 20 AND bc.CategoryID = 8 
+    ORDER BY p.post_id DESC 
+    LIMIT 1 OFFSET 1";   $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
     $image_path = $row['image_path'];
     ?>
@@ -167,8 +179,13 @@
     if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
     }
-    $sql = "SELECT post_id, image_path FROM Posts ORDER BY post_id DESC LIMIT 1 OFFSET 2";  // 세 번째 최신 뉴스
-    $result = mysqli_query($conn, $sql);
+    $sql = "SELECT p.post_id, p.image_path 
+        FROM Posts AS p
+        JOIN Board_list AS bl ON p.BoardID = bl.BoardID
+        JOIN Board_category AS bc ON bl.CategoryID = bc.CategoryID
+        WHERE bl.BoardID = 20 AND bc.CategoryID = 8 
+        ORDER BY p.post_id DESC 
+        LIMIT 1 OFFSET 2";   $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
     $image_path = $row['image_path'];
     ?>
@@ -242,7 +259,7 @@ $start = ($page-1) * $perPage;
 
 // 게시글 쿼리 수정
 $postsSql = "SELECT P.post_id, P.post_title, P.team_id, M.member_name FROM Posts P INNER JOIN Member M ON P.member_id = M.member_id WHERE P.BoardID = ? ORDER BY P.post_date DESC LIMIT ?, ?";
-//Posts 테이블과 Member 테이블을 결합, 결합 조건은 Posts 테이블의 member_id가 Member 테이블의 member_id와 같은 행을 찾아라 
+//Posts 테이블과 Member 테이블을 결합 결합 조건은 Posts 테이블의 member_id가 Member 테이블의 member_id와 같은 행을 찾아라 
 
 $postsStmt = $conn->prepare($postsSql);
 $postsStmt->bind_param("iii", $board_id, $start, $perPage);
@@ -260,7 +277,7 @@ while($row = $result->fetch_assoc()) {
     $postNumber = $totalPosts - (($page - 1) * $perPage + $count); // 게시글 고유 번호 계산
 
     echo "<div>";
-    echo "<div class='title'><a href='board_detail.php?post_id=" . $row["post_id"] . "'>[" . $team_name . "] " . $row["post_title"] . "</a></div>"; // post_id 추가            
+    echo "<div class='title'><a href='board_detail.php?post_id=" . $row["post_id"] . "&board_id=" . $board_id . "'>[" . $team_name . "] " . $row["post_title"] . "</a></div>"; // post_id와 board_id 추가
     echo "<div class='writer'>" . $row["member_name"] . "</div>"; // member_name 출력
     echo "</div>";
     $count++;

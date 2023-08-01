@@ -1,4 +1,4 @@
-<!-- PHP 코 부ㄴ -->
+<!-- PHP 부분 -->
 <?php
 include 'test_DB_connect.php';
 
@@ -11,10 +11,37 @@ if ($conn->connect_error) {
 // 게시판 id를 url parameter에서 가져옴
 $board_id = $_GET["board_id"]; 
 
-$stmt = $conn->prepare("SELECT P.post_id, P.post_title, P.team_id, P.post_content, M.member_name, P.post_date, P.post_views FROM Posts P INNER JOIN Member M ON P.member_id = M.member_id WHERE P.BoardID = ?");
-$stmt->bind_param("i", $board_id);
-$stmt->execute();
-$result = $stmt->get_result();
+// 페이지당 게시글 수
+$perPage = 5;
+
+// 총 게시글 수를 가져오는 쿼리
+$totalPostsSql = "SELECT COUNT(*) as cnt FROM Posts WHERE BoardID = ?";
+$totalPostsStmt = $conn->prepare($totalPostsSql);
+$totalPostsStmt->bind_param("i", $board_id);
+$totalPostsStmt->execute();
+$totalPostsResult = $totalPostsStmt->get_result();
+$totalPostsRow = $totalPostsResult->fetch_assoc();
+
+// 총 게시글 수
+$totalPosts = $totalPostsRow['cnt'];
+
+// 총 페이지 수
+$totalPages = ceil($totalPosts / $perPage);
+
+// 현재 페이지 번호 (없으면 1을 기본으로)
+$page = (isset($_GET['page']) && !empty($_GET['page'])) ? $_GET['page'] : 1;
+
+// DB에서 가져올 게시글의 시작 위치
+$start = ($page-1) * $perPage;
+
+// 게시글 쿼리 
+$postsSql = "SELECT P.post_id, P.post_title, P.team_id, P.post_content, M.member_name, P.post_date, P.post_views FROM Posts P INNER JOIN Member M ON P.member_id = M.member_id WHERE P.BoardID = ? ORDER BY P.post_date DESC LIMIT ?, ?";
+$postsStmt = $conn->prepare($postsSql);
+$postsStmt->bind_param("iii", $board_id, $start, $perPage);
+$postsStmt->execute();
+$result = $postsStmt->get_result();
+
+
 
 // $stmt = $conn->prepare("SELECT post_id, post_title, post_content, member_id, post_date, post_views FROM Posts");
 // $stmt->execute();
@@ -66,8 +93,8 @@ $result = $stmt->get_result();
 <!-- 게시판 섹션 시작 -->
 <div class="board_wrap">
     <div class="board_title">
-        <Strong>DMZ 공동경비구역</Strong>
-        <p>자유롭게 이야기하는 곳</p>
+        <Strong>아스날 본진</Strong>
+        <p>아스날 사령실</p>
     </div>
     <div class="board_list_wrap">
         <div class="board_list">
@@ -79,31 +106,44 @@ $result = $stmt->get_result();
                 <div class="count">조회</div>
             </div>
             <?php
-            $count = 1; //카운트 변수 
-            while($row = $result->fetch_assoc()) {
-                echo "<div>";
-                echo "<div class='num'>" . $count . "</div>"; //카운트값 출력 
-                echo "<div class='title'><a href='#'>" . $row["post_title"] . "</a></div>";
-                echo "<div class='writer'>" . $row["member_name"] . "</div>"; // member_name 출력
-                echo "<div class='date'>" . $row["post_date"] . "</div>";
-                echo "<div class='count'>" . $row["post_views"] . "</div>";
-                echo "</div>";
-                $count++;
+             session_start();  // 세션 시작
+           $count = 0; //카운트 변수
+           while($row = $result->fetch_assoc()) {
+               $team_stmt = $conn->prepare("SELECT team_name FROM Teams WHERE team_id = ?");
+               $team_stmt->bind_param("i", $row["team_id"]);
+               $team_stmt->execute();
+               $team_result = $team_stmt->get_result();
+               $team_name = $team_result->fetch_assoc()["team_name"];
+           
+               $postNumber = $totalPosts - (($page - 1) * $perPage + $count); // 게시글 고유 번호 계산
+           
+               echo "<div>";
+               echo "<div class='num'>" . $postNumber . "</div>"; //카운트값 출력 
+               echo "<div class='title'><a href='board_detail.php?post_id=" . $row["post_id"] . "&board_id=" . $board_id . "'>[" . $team_name . "] " . $row["post_title"] . "</a></div>"; // post_id와 board_id 추가
+               echo "<div class='writer'>" . $row["member_name"] . "</div>"; // member_name 출력
+               echo "<div class='date'>" . $row["post_date"] . "</div>";
+               echo "<div class='count'>" . $row["post_views"] . "</div>";
+               if (isset($_SESSION['member_admin']) && $_SESSION['member_admin'] == true) {
+                echo "<div class='delete'><a href='post_delete.php?post_id=" . $row["post_id"] . "'>Delete</a></div>"; // 관리자인 경우에만 삭제 링크 표시
             }
+               echo "</div>";
+               $count++;
+           }
             ?>
         </div>
             </div>
             <div class="board_page">
-                <a href="#" class="bt first"><<</a>
-                <a href="#" class="bt prev"><</a>
-                <a href="#" class="num on">1</a>
-                <a href="#" class="num">2</a>
-                <a href="#" class="num">3</a>
-                <a href="#" class="num">4</a>
-                <a href="#" class="num">5</a>
-                <a href="#" class="bt next">></a>
-                <a href="#" class="bt last">>></a>
+        <?php
+            for($i = 1; $i <= $totalPages; $i++){
+            if($i == $page){
+            echo '<a href="?board_id='.$board_id.'&page='.$i.'" class="num on">'.$i.'</a> ';
+                } else {
+                echo '<a href="?board_id='.$board_id.'&page='.$i.'" class="num">'.$i.'</a> ';
+                }
+            }
+            ?>
             </div>
+
             <div class="board-controls">
                 <div class="bt_write">
                 <?php

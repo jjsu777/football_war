@@ -1,4 +1,3 @@
-<!-- PHP 코드 부분 -->
 <?php
 include 'test_DB_connect.php';
 
@@ -9,6 +8,7 @@ if ($conn->connect_error) {
 }
 
 $post_id = $_GET["post_id"];
+$board_id = $_GET["board_id"]; // 게시판 ID를 GET
 
 // 게시글 쿼리 
 $postsSql = "SELECT P.post_id, P.post_title, P.team_id, P.post_content, p.image_path, M.member_name, P.post_date, P.post_views FROM Posts P INNER JOIN Member M ON P.member_id = M.member_id WHERE P.post_id = ?";
@@ -19,11 +19,19 @@ $result = $postsStmt->get_result();
 
 $row = $result->fetch_assoc();
 
+// 게시판 정보 쿼리
+$boardSql = "SELECT B.CategoryName, L.BoardName FROM Board_category B INNER JOIN Board_list L ON B.CategoryID = L.CategoryID WHERE L.BoardID = ?";
+$boardStmt = $conn->prepare($boardSql);
+$boardStmt->bind_param("i", $board_id);
+$boardStmt->execute();
+$boardResult = $boardStmt->get_result();
+
+$boardRow = $boardResult->fetch_assoc();
 
 ?>
 
 <!DOCTYPE html>
-<lang="ko">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>축구는 전쟁이다</title>
@@ -62,8 +70,8 @@ $row = $result->fetch_assoc();
    <!-- 게시판 섹션 시작 -->
 <div class="board_wrap">
     <div class="board_title">
-        <Strong>DMZ 공동경비구역</Strong>
-        <p>자유롭게 이야기하는 곳</p>
+        <Strong><?php echo $boardRow["CategoryName"]; ?></Strong>
+        <p><?php echo $boardRow["BoardName"]; ?></p>
     </div>
    
     <form action="write_input.php" method="POST">
@@ -74,7 +82,7 @@ $row = $result->fetch_assoc();
                         <dt>제목</dt>
                         <dd>
                         <?php
-                       echo $row["post_title"]; // member_name 출력
+                       echo $row["post_title"]; // 제목 출력
                    ?>
                    </dd>
                         </dl>
@@ -83,7 +91,7 @@ $row = $result->fetch_assoc();
                     <dl>
                     <dd>
                     <?php
-               echo "작성자 : " . $row["member_name"]; // member_name 출력
+               echo "작성자 : " . $row["member_name"]; // 작성자 출력
            ?>
                    </dd>
                     </dl>

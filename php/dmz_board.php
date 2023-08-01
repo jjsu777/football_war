@@ -42,6 +42,7 @@ $postsStmt->execute();
 $result = $postsStmt->get_result();
 
 
+
 // $stmt = $conn->prepare("SELECT post_id, post_title, post_content, member_id, post_date, post_views FROM Posts");
 // $stmt->execute();
 // $result = $stmt->get_result();
@@ -105,6 +106,7 @@ $result = $postsStmt->get_result();
                 <div class="count">조회</div>
             </div>
             <?php
+             session_start();  // 세션 시작
            $count = 0; //카운트 변수
            while($row = $result->fetch_assoc()) {
                $team_stmt = $conn->prepare("SELECT team_name FROM Teams WHERE team_id = ?");
@@ -117,10 +119,13 @@ $result = $postsStmt->get_result();
            
                echo "<div>";
                echo "<div class='num'>" . $postNumber . "</div>"; //카운트값 출력 
-               echo "<div class='title'><a href='board_detail.php?post_id=" . $row["post_id"] . "'>[" . $team_name . "] " . $row["post_title"] . "</a></div>"; // post_id 추가
+               echo "<div class='title'><a href='board_detail.php?post_id=" . $row["post_id"] . "&board_id=" . $board_id . "'>[" . $team_name . "] " . $row["post_title"] . "</a></div>"; // post_id와 board_id 추가
                echo "<div class='writer'>" . $row["member_name"] . "</div>"; // member_name 출력
                echo "<div class='date'>" . $row["post_date"] . "</div>";
                echo "<div class='count'>" . $row["post_views"] . "</div>";
+               if (isset($_SESSION['member_admin']) && $_SESSION['member_admin'] == true) {
+                echo "<div class='delete'><a href='post_delete.php?post_id=" . $row["post_id"] . "'>Delete</a></div>"; // 관리자인 경우에만 삭제 링크 표시
+            }
                echo "</div>";
                $count++;
            }

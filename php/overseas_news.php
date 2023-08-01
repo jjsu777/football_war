@@ -35,7 +35,7 @@ $page = (isset($_GET['page']) && !empty($_GET['page'])) ? $_GET['page'] : 1;
 $start = ($page-1) * $perPage;
 
 // 게시글 쿼리 
-$postsSql = "SELECT P.post_id, P.post_title, P.team_id, P.post_content, M.member_name, P.post_date, P.post_views FROM Posts P INNER JOIN Member M ON P.member_id = M.member_id WHERE P.BoardID = ? ORDER BY P.post_date DESC LIMIT ?, ?";
+$postsSql = "SELECT P.post_id, P.post_title, P.post_content, M.member_name, P.post_date, P.post_views FROM Posts P INNER JOIN Member M ON P.member_id = M.member_id WHERE P.BoardID = ? ORDER BY P.post_date DESC LIMIT ?, ?";
 $postsStmt = $conn->prepare($postsSql);
 $postsStmt->bind_param("iii", $board_id, $start, $perPage);
 $postsStmt->execute();
@@ -107,17 +107,11 @@ $result = $postsStmt->get_result();
             <?php
            $count = 0; //카운트 변수
            while($row = $result->fetch_assoc()) {
-               $team_stmt = $conn->prepare("SELECT team_name FROM Teams WHERE team_id = ?");
-               $team_stmt->bind_param("i", $row["team_id"]);
-               $team_stmt->execute();
-               $team_result = $team_stmt->get_result();
-               $team_name = $team_result->fetch_assoc()["team_name"];
-           
                $postNumber = $totalPosts - (($page - 1) * $perPage + $count); // 게시글 고유 번호 계산
            
                echo "<div>";
                echo "<div class='num'>" . $postNumber . "</div>"; //카운트값 출력 
-               echo "<div class='title'><a href='board_detail.php?post_id=" . $row["post_id"] . "'>[" . $team_name . "] " . $row["post_title"] . "</a></div>"; // post_id 추가
+               echo "<div class='title'><a href='board_detail.php?post_id=" . $row["post_id"] . "'>" . $row["post_title"] . "</a></div>"; // post_id 추가
                echo "<div class='writer'>" . $row["member_name"] . "</div>"; // member_name 출력
                echo "<div class='date'>" . $row["post_date"] . "</div>";
                echo "<div class='count'>" . $row["post_views"] . "</div>";

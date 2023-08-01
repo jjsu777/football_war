@@ -68,7 +68,7 @@ if ($conn->connect_error) {
                 <dl>
                         <dt>이미지 업로드</dt>
                     <dd>
-                    <input type="file" name="team_image">
+                    <input type="file" name="fileToUpload">
                      </dd>
 
                             </select>

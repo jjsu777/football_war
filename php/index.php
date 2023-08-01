@@ -107,48 +107,86 @@
 <div class="right-section">
     <!-- 오른쪽 섹션 내용 추가 -->
     <div class="news">
-        <div class="news-item">
-            <a href="news1.html">
-                <h2>최신 뉴스1</h2>
-                <p>뉴스 이미지가 여기에 표시</p>
-                <?php
-            if (isset($_SESSION['member_admin']) && $_SESSION['member_admin'] == true) {
+    <div class="news-item">
+        <?php
+        include 'test_DB_connect.php';
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+        }
+        $sql = "SELECT post_id, image_path FROM Posts ORDER BY post_id DESC LIMIT 1 OFFSET 0";  // 첫 번째 최신 뉴스
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_assoc($result);
+        $image_path = $row['image_path'];
         ?>
-        <a href="admin_news_write.php"><button>관리자 버튼</button></a>
+        <a href="board_detail.php?post_id=<?php echo $row['post_id']; ?>">
+            <h2>최신 뉴스1</h2>
+            <p>
+                <img src="<?php echo $image_path ?>" alt="News Image" style="width: 200px; height: 200px;">
+            </p>
+        </a>
+        <?php
+        if (isset($_SESSION['member_admin']) && $_SESSION['member_admin'] == true) {
+        ?>
+            <a href="admin_news_write.php"><button>관리자 버튼</button></a>
         <?php
             }
         ?>
-            </a>
-        </div>
+    </div>
+    <div class="news-item">
+    <?php
+    include 'test_DB_connect.php';
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+    }
+    $sql = "SELECT post_id, image_path FROM Posts ORDER BY post_id DESC LIMIT 1 OFFSET 1";  // 두 번째 최신 뉴스
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+    $image_path = $row['image_path'];
+    ?>
+    <a href="board_detail.php?post_id=<?php echo $row['post_id']; ?>">
+        <h2>최신 뉴스2</h2>
+        <p>
+            <img src="<?php echo $image_path ?>" alt="News Image" style="width: 200px; height: 200px;">
+        </p>
+    </a>
+    <?php
+    if (isset($_SESSION['member_admin']) && $_SESSION['member_admin'] == true) {
+    ?>
+        <a href="admin_news_write.php"><button>관리자 버튼</button></a>
+    <?php
+        }
+    ?>
+</div>
 
-        <div class="news-item">
-            <a href="news2.html">
-                <h2>최신 뉴스2</h2>
-                <p>뉴스 이미지가 여기에 표시</p>
-                <?php
-            if (isset($_SESSION['member_admin']) && $_SESSION['member_admin'] == true) {
-        ?>
+<div class="news-item">
+    <?php
+    include 'test_DB_connect.php';
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+    }
+    $sql = "SELECT post_id, image_path FROM Posts ORDER BY post_id DESC LIMIT 1 OFFSET 2";  // 세 번째 최신 뉴스
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+    $image_path = $row['image_path'];
+    ?>
+    <a href="board_detail.php?post_id=<?php echo $row['post_id']; ?>">
+        <h2>최신 뉴스3</h2>
+        <p>
+            <img src="<?php echo $image_path ?>" alt="News Image" style="width: 200px; height: 200px;">
+        </p>
+    </a>
+    <?php
+    if (isset($_SESSION['member_admin']) && $_SESSION['member_admin'] == true) {
+    ?>
         <a href="admin_news_write.php"><button>관리자 버튼</button></a>
-        <?php
-            }
-        ?>
-                
-            </a>
-        </div>
+    <?php
+        }
+    ?>
+</div>
 
-        <div class="news-item">
-            <a href="news3.html">
-                <h2>최신 뉴스3</h2>
-                <p>뉴스 이미지가 여기에 표시</p>
-                <?php
-            if (isset($_SESSION['member_admin']) && $_SESSION['member_admin'] == true) {
-        ?>
-        <a href="admin_news_write.php"><button>관리자 버튼</button></a>
-        <?php
-            }
-        ?>
-            </a>
-        </div>
     </div>
 
     <div class="topic">

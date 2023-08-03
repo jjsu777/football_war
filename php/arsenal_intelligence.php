@@ -94,8 +94,8 @@ $result = $postsStmt->get_result();
 <!-- 게시판 섹션 시작 -->
 <div class="board_wrap">
     <div class="board_title">
-        <Strong>DMZ 공동경비구역</Strong>
-        <p>자유롭게 이야기하는 곳</p>
+        <Strong>아스날 본진</Strong>
+        <p>아스날 첩보실</p>
     </div>
     <div class="board_list_wrap">
         <div class="board_list">

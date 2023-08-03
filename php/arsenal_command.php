@@ -148,10 +148,9 @@ $result = $postsStmt->get_result();
                 <div class="bt_write">
                 <?php
                     $board_id = $_GET["board_id"];  // URL의 board_id 값을 갯
+                    $category_id = $_GET["category_id"];  // URL의 category_id 값을 가져옴
                 ?>
-                    <a href="board_write.php?board_id=<?php echo $board_id; ?>" class="on">글쓰기</a>
-                </div>
-
+                  <a href="board_write.php?board_id=<?php echo $board_id; ?>&category_id=<?php echo $category_id; ?>" class="on">글쓰기</a>
                 </div>
                 <div class="board-search">
                     <form action="#">

@@ -29,6 +29,12 @@ $boardResult = $boardStmt->get_result();
 
 $boardRow = $boardResult->fetch_assoc();
 
+
+// 조회수 +1 쿼리
+$stmt = $conn->prepare("UPDATE Posts SET post_views = post_views + 1 WHERE post_id = ?");
+$stmt->bind_param("i", $post_id);
+
+$stmt->execute();
 ?>
 
 <!DOCTYPE html>

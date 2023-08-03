@@ -8,11 +8,28 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$post_id = $_GET["post_id"];
 $board_id = $_GET["board_id"]; // 게시판 ID를 GET
+$category_id = $_GET["category_id"]; // 게시판 ID를 GET
 
 // Teams 테이블에서 값 가져오기
-$stmt = $conn->prepare("SELECT team_id, team_name FROM Teams");
+if ($category_id == 1) {
+    $stmt = $conn->prepare("SELECT team_id, team_name FROM Teams");
+} else if ($category_id == 2) {
+    $stmt = $conn->prepare("SELECT team_id, team_name FROM Teams WHERE team_id IN (1)");
+} else if ($category_id == 3) {
+    $stmt = $conn->prepare("SELECT team_id, team_name FROM Teams WHERE team_id IN (2)");
+} else if ($category_id == 4) {
+    $stmt = $conn->prepare("SELECT team_id, team_name FROM Teams WHERE team_id IN (3)");
+} else if ($category_id == 5) {
+    $stmt = $conn->prepare("SELECT team_id, team_name FROM Teams WHERE team_id IN (4)");
+} else if ($category_id == 6) {
+    $stmt = $conn->prepare("SELECT team_id, team_name FROM Teams WHERE team_id IN (5)");
+} else if ($category_id == 7) {
+    $stmt = $conn->prepare("SELECT team_id, team_name FROM Teams WHERE team_id IN (6)"); 
+} else if ($category_id == 8) {
+    $stmt = $conn->prepare("SELECT team_id, team_name FROM Teams WHERE team_id IN (7)");
+}
+
 $stmt->execute();
 $result = $stmt->get_result();
 

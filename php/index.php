@@ -92,7 +92,9 @@
                 echo "<ul>"; // 카테고리의 목록 시작
                 $currentCategoryId = $row['CategoryID'];
             }
-            echo "<li><a href='".$row['BoardURL'].".php?board_id=".$row['BoardID']."'>".$row['BoardName']."</a></li>";
+            //echo "<li><a href='".$row['BoardURL'].".php?board_id=".$row['BoardID']."'>".$row['BoardName']."</a></li>";
+            echo "<li><a href='".$row['BoardURL'].".php?board_id=".$row['BoardID']."&category_id=".$row['CategoryID']."'>".$row['BoardName']."</a></li>";
+
         }
         echo "</ul>"; // 마지막 카테고리의 목록 닫기
         echo "</div>"; // 게시판 목록 닫기
@@ -125,7 +127,8 @@
         $row = mysqli_fetch_assoc($result);
         $image_path = $row['image_path'];
         ?>
-     <a href="board_detail.php?post_id=<?php echo $row['post_id']; ?>&board_id=<?php echo $row['BoardID']; ?>">
+     <a href="board_detail.php?post_id=<?php echo $row['post_id']; 
+     ?>&board_id=<?php echo $row['BoardID']; ?>">
 
             <h2>최신 뉴스1</h2>
             <p>
@@ -135,7 +138,7 @@
         <?php
         if (isset($_SESSION['member_admin']) && $_SESSION['member_admin'] == true) {
         ?>
-            <a href="admin_news_write.php"><button>관리자 버튼</button></a>
+            <a href="write_input.php"><button>관리자 버튼</button></a>
         <?php
             }
         ?>
@@ -147,7 +150,7 @@
     if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
     }
-    $sql = "SELECT p.post_id, p.image_path 
+    $sql = "SELECT p.post_id, p.image_path, p.BoardID 
     FROM Posts AS p
     JOIN Board_list AS bl ON p.BoardID = bl.BoardID
     JOIN Board_category AS bc ON bl.CategoryID = bc.CategoryID
@@ -157,8 +160,9 @@
     $row = mysqli_fetch_assoc($result);
     $image_path = $row['image_path'];
     ?>
-    <a href="board_detail.php?post_id=<?php echo $row['post_id']; ?>">
-        <h2>최신 뉴스2</h2>
+    <a href="board_detail.php?post_id=<?php echo $row['post_id'];
+     ?>&board_id=<?php echo $row['BoardID']; ?>">
+     <h2>최신 뉴스2</h2>
         <p>
             <img src="<?php echo $image_path ?>" alt="News Image" style="width: 200px; height: 200px;">
         </p>
@@ -166,7 +170,7 @@
     <?php
     if (isset($_SESSION['member_admin']) && $_SESSION['member_admin'] == true) {
     ?>
-        <a href="admin_news_write.php"><button>관리자 버튼</button></a>
+        <a href="write_input.php"><button>관리자 버튼</button></a>
     <?php
         }
     ?>
@@ -179,7 +183,7 @@
     if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
     }
-    $sql = "SELECT p.post_id, p.image_path 
+    $sql = "SELECT p.post_id, p.image_path, p.BoardID
         FROM Posts AS p
         JOIN Board_list AS bl ON p.BoardID = bl.BoardID
         JOIN Board_category AS bc ON bl.CategoryID = bc.CategoryID
@@ -189,8 +193,8 @@
     $row = mysqli_fetch_assoc($result);
     $image_path = $row['image_path'];
     ?>
-    <a href="board_detail.php?post_id=<?php echo $row['post_id']; ?>">
-        <h2>최신 뉴스3</h2>
+   <a href="board_detail.php?post_id=<?php echo $row['post_id']; ?>&board_id=<?php echo $row['BoardID']; ?>">
+     <h2>최신 뉴스3</h2>
         <p>
             <img src="<?php echo $image_path ?>" alt="News Image" style="width: 200px; height: 200px;">
         </p>
@@ -198,7 +202,7 @@
     <?php
     if (isset($_SESSION['member_admin']) && $_SESSION['member_admin'] == true) {
     ?>
-        <a href="admin_news_write.php"><button>관리자 버튼</button></a>
+        <a href="write_input.php"><button>관리자 버튼</button></a>
     <?php
         }
     ?>

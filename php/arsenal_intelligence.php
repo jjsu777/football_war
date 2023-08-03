@@ -145,13 +145,18 @@ $result = $postsStmt->get_result();
             </div>
 
             <div class="board-controls">
-                <div class="bt_write">
-                <?php
-                    $board_id = $_GET["board_id"];  // URL의 board_id 값을 갯
-                    $category_id = $_GET["category_id"];  // URL의 category_id 값을 가져옴
+            <div class="bt_write">
+        <?php
+    if(isset($_SESSION['member_id'])) {
+        $board_id = $_GET["board_id"];  // URL의 board_id 값을 가져옴
+        $category_id = $_GET["category_id"];  // URL의 category_id 값을 가져옴
+            ?>
+            <a href="board_write.php?board_id=<?php echo $board_id; ?>&category_id=<?php echo $category_id; ?>" class="on">글쓰기</a>
+            <?php
+            }
                 ?>
-                  <a href="board_write.php?board_id=<?php echo $board_id; ?>&category_id=<?php echo $category_id; ?>" class="on">글쓰기</a>
-                </div>
+            </div>
+
                 <div class="board-search">
                     <form action="#">
                         <input type="text" placeholder="검색...">

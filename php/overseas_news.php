@@ -149,9 +149,13 @@ $result = $postsStmt->get_result();
                 <?php
                     $board_id = $_GET["board_id"];  // URL의 board_id 값을 갯
                     $category_id = $_GET["category_id"];  // URL의 category_id 값을 가져옴
-                ?>
-                  <a href="board_write.php?board_id=<?php echo $board_id; ?>&category_id=<?php echo $category_id; ?>" class="on">글쓰기</a>
-                </div>
+                    if (isset($_SESSION['member_admin']) && $_SESSION['member_admin'] == true) { // 관리자인 경우에만 글쓰기 버튼 표시
+                        ?>
+                            <a href="board_write.php?board_id=<?php echo $board_id; ?>&category_id=<?php echo $category_id; ?>" class="on">글쓰기</a>
+                        <?php
+                          }
+                        ?>
+                        </div>
                 <div class="board-search">
                     <form action="#">
                         <input type="text" placeholder="검색...">

@@ -14,10 +14,8 @@ if (isset($_POST['submit_comment'])) {
         }
     }
 
-    // 스테이트먼트를 닫습니다.
     mysqli_stmt_close($stmt);
 
-    // 데이터베이스 연결을 닫습니다.
     mysqli_close($conn);
 }
 ?>

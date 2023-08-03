@@ -14,11 +14,19 @@ $post_id = $_GET['post_id']; // 삭제할 게시글 ID 가져오기
 $stmt = $conn->prepare("DELETE FROM Posts WHERE post_id = ?");
 $stmt->bind_param("i", $post_id);
 
-$stmt->execute();
-
+if ($stmt->execute()) {
+    //성공 메시지
+    echo "<script>
+    alert('게시글 삭제 성공');
+    history.back();
+    </script>";
+} else {
+    //실패 메시지
+    echo "<script>
+    alert('게시글 삭제 실패');
+    history.back();
+    </script>";
+}
 $stmt->close();
 $conn->close();
-
-// 삭제 후 게시판 페이지로 리다이렉트
-header('Location: index.php');
 ?>

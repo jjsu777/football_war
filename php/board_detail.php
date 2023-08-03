@@ -120,21 +120,29 @@ $boardRow = $boardResult->fetch_assoc();
                 <h3>댓글목록</h3>
 
                 <?php
-                    // 게시글에 해당하는 댓글 쿼리
-                    $commentsSql = "SELECT C.comment_id, C.comment_content, M.member_name, C.comment_date FROM Comments C INNER JOIN Member M ON C.member_id = M.member_id WHERE C.post_id = ?";
-                    $commentsStmt = $conn->prepare($commentsSql);
-                    $commentsStmt->bind_param("i", $post_id);
-                    $commentsStmt->execute();
-                    $commentsResult = $commentsStmt->get_result();
+    // 게시글에 해당하는 댓글 쿼리
+    $commentsSql = "SELECT C.comment_id, C.comment_content, M.member_name, M.member_id, C.comment_date FROM Comments C INNER JOIN Member M ON C.member_id = M.member_id WHERE C.post_id = ?";
+    $commentsStmt = $conn->prepare($commentsSql);
+    $commentsStmt->bind_param("i", $post_id);
+    $commentsStmt->execute();
+    $commentsResult = $commentsStmt->get_result();
 
-                    // 댓글 출력
-                    while ($commentsRow = $commentsResult->fetch_assoc()) {
-                        echo "<div class='comment'>";
-                        echo "<p>" . $commentsRow["member_name"] . " (" . $commentsRow["comment_date"] . "):</p>";
-                        echo "<p>" . $commentsRow["comment_content"] . "</p>";
-                        echo "</div>";
-                    }
-                ?>
+    // 댓글 출력
+    while ($commentsRow = $commentsResult->fetch_assoc()) {
+        echo "<div class='comment'>";
+        echo "<p>" . $commentsRow["member_name"] . " (" . $commentsRow["comment_date"] . "):</p>";
+        echo "<p>" . $commentsRow["comment_content"] . "</p>";
+
+        // 현재 사용자가 댓글 작성자이거나 관리자인 경우에만 삭제 버튼 표시
+        if ($_SESSION['member_id'] == $commentsRow['member_id'] || $_SESSION['member_admin'] == 1) {
+            echo "<form action='comment_delete.php' method='POST'>";
+            echo "<input type='hidden' name='comment_id' value='" . $commentsRow["comment_id"] . "'>";
+            echo "<input type='submit' name='delete_comment' value='댓글 삭제'>";
+            echo "</form>";
+        }
+        echo "</div>";
+    }
+?>
             </div>
             <!-- 댓글 섹션 끝 -->
 

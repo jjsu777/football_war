@@ -34,12 +34,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // 준비된 쿼리문에 변수들을 바인딩
     $stmt->bind_param("sisiiss", $title, $team, $content, $board_id, $member_id, $date, $target_file);
 
-    // 준비된 쿼리문을 실행합니다.
-    if ($stmt->execute()) {
-        echo "새로운 글이 성공적으로 등록되었습니다.";
-    } else {
-        echo "오류 발생: " . $stmt->error;
-    }
+   // 준비된 쿼리문을 실행합니다.
+if ($stmt->execute()) {
+    // 성공 메시지
+    echo "<script>
+    alert('새로운 글이 성공적으로 등록되었습니다.');
+    history.go(-2);
+    </script>";
+} else {
+    // 실패 메시지
+    echo "<script>
+    alert('오류 발생: " . $stmt->error . "');
+    history.go(-2);
+    </script>";
+}
 }
 
 $conn->close();

@@ -10,13 +10,13 @@ if (isset($_POST['submit_comment'])) {
         if (mysqli_stmt_execute($stmt)) {
             // 성공 메시지
             echo "<script>
-            alert('댓글이 성공적으로 등록되었습니다.');
+            alert('댓글 작성 성공');
             history.back();
             </script>";
         } else {
             // 실패 메시지
             echo "<script>
-            alert('댓글을 등록하는 도중 문제가 발생했습니다: " . mysqli_error($conn) . "');
+            alert('댓글 작성 실패');
             history.back();
             </script>";
         }

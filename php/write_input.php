@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
     move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file); // 이미지 저장
 
-    // 작성자의 사용자명($username)으로부터 member_id 값을 조회
+    // 작성자의 사용자명으로 member_id 값을 조회
     $stmt = $conn->prepare("SELECT member_id FROM member WHERE member_name = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
@@ -34,17 +34,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // 준비된 쿼리문에 변수들을 바인딩
     $stmt->bind_param("sisiiss", $title, $team, $content, $board_id, $member_id, $date, $target_file);
 
-   // 준비된 쿼리문을 실행합니다.
+   // 준비된 쿼리문을 실행
 if ($stmt->execute()) {
     // 성공 메시지
     echo "<script>
-    alert('새로운 글이 성공적으로 등록되었습니다.');
+    alert('글 작성 성공.');
     history.go(-2);
     </script>";
 } else {
     // 실패 메시지
     echo "<script>
-    alert('오류 발생: " . $stmt->error . "');
+    alert('글 작성 실패');
     history.go(-2);
     </script>";
 }

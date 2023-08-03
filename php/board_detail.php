@@ -1,4 +1,5 @@
 <?php
+session_start(); // 세션 시작
 include 'test_DB_connect.php';
 
 // 데이터베이스 연결 생성
@@ -74,7 +75,6 @@ $boardRow = $boardResult->fetch_assoc();
         <p><?php echo $boardRow["BoardName"]; ?></p>
     </div>
    
-    <form action="write_input.php" method="POST">
        <div class ="board_write_wrap">
             <div class="board_write">
                 <div class="title">
@@ -107,6 +107,37 @@ $boardRow = $boardResult->fetch_assoc();
                    </dd>
                         </dl>
                 </div>
+
+                
+                <form action="comment_insert.php" method="POST">
+                <input type="hidden" name="comment_member_id" value="<?php echo $_SESSION['member_id']; ?>">
+                <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
+                <textarea name="comment_content" cols="80" rows="5" required></textarea>
+                <input type="submit" name="submit_comment" value="댓글 작성">
+            </form>
+            <!-- 댓글 섹션 시작 -->
+            <div class="comments_section">
+                <h3>댓글목록</h3>
+
+                <?php
+                    // 게시글에 해당하는 댓글 쿼리
+                    $commentsSql = "SELECT C.comment_id, C.comment_content, M.member_name, C.comment_date FROM Comments C INNER JOIN Member M ON C.member_id = M.member_id WHERE C.post_id = ?";
+                    $commentsStmt = $conn->prepare($commentsSql);
+                    $commentsStmt->bind_param("i", $post_id);
+                    $commentsStmt->execute();
+                    $commentsResult = $commentsStmt->get_result();
+
+                    // 댓글 출력
+                    while ($commentsRow = $commentsResult->fetch_assoc()) {
+                        echo "<div class='comment'>";
+                        echo "<p>" . $commentsRow["member_name"] . " (" . $commentsRow["comment_date"] . "):</p>";
+                        echo "<p>" . $commentsRow["comment_content"] . "</p>";
+                        echo "</div>";
+                    }
+                ?>
+            </div>
+            <!-- 댓글 섹션 끝 -->
+
             </div>
             <div class="bt_wrap">
                 <a href="#">취소</a>

@@ -10,16 +10,16 @@
         $password = $_POST['password'];
 
         // DB에서 사용자 정보를 확인하는 코드...
-        $sql = "SELECT member_email, member_pass, member_name, member_admin FROM Member WHERE member_email=?";
+        $sql = "SELECT member_id, member_email, member_pass, member_name, member_admin FROM Member WHERE member_email=?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $email);
         $stmt->execute();
-        $stmt->bind_result($member_email, $member_pass, $member_name, $member_admin);
+        $stmt->bind_result($member_id, $member_email, $member_pass, $member_name, $member_admin);
         $stmt->fetch();
         if (password_verify($password, $member_pass)) {
             // 로그인 성공
             session_start(); // Start the session
-            $_SESSION["email"] = $email; // Store user email in session variable
+            $_SESSION["email"] = $email; 
             $_SESSION['name'] = $member_name; // 세션에 닉네임 저장
             $_SESSION['member_id'] = $member_id; // 세션에 멤버id 저장
             $_SESSION['member_admin'] = $member_admin; // 세션에 admin여부 저장

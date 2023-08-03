@@ -108,7 +108,6 @@ $boardRow = $boardResult->fetch_assoc();
                         </dl>
                 </div>
 
-                
                 <form action="comment_insert.php" method="POST">
                 <input type="hidden" name="comment_member_id" value="<?php echo $_SESSION['member_id']; ?>">
                 <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">

@@ -8,6 +8,9 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+$post_id = $_GET["post_id"];
+$board_id = $_GET["board_id"]; // 게시판 ID를 GET
+
 // Teams 테이블에서 값 가져오기
 $stmt = $conn->prepare("SELECT team_id, team_name FROM Teams");
 $stmt->execute();
@@ -18,6 +21,16 @@ $teams = [];
 while ($row = $result->fetch_assoc()) {
     $teams[] = $row;
 }
+
+// 게시판 정보 쿼리
+$boardSql = "SELECT B.CategoryName, L.BoardName FROM Board_category B INNER JOIN Board_list L ON B.CategoryID = L.CategoryID WHERE L.BoardID = ?";
+$boardStmt = $conn->prepare($boardSql);
+$boardStmt->bind_param("i", $board_id);
+$boardStmt->execute();
+$boardResult = $boardStmt->get_result();
+
+$boardRow = $boardResult->fetch_assoc();
+
 ?>
 
 <!DOCTYPE html>
@@ -60,8 +73,8 @@ while ($row = $result->fetch_assoc()) {
    <!-- 게시판 섹션 시작 -->
 <div class="board_wrap">
     <div class="board_title">
-        <Strong>게시글 작성</Strong>
-        <p>해외축구는 전쟁이다.</p>
+        <Strong><?php echo $boardRow["CategoryName"]; ?></Strong>
+        <p><?php echo $boardRow["BoardName"]; ?></p>
     </div>
    
     <form action="write_input.php" method="POST" enctype="multipart/form-data">

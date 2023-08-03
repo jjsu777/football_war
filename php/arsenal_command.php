@@ -1,5 +1,6 @@
 <!-- PHP 부분 -->
 <?php
+session_start();  // 세션 시작
 include 'test_DB_connect.php';
 
 // 데이터베이스 연결 생성
@@ -35,7 +36,7 @@ $page = (isset($_GET['page']) && !empty($_GET['page'])) ? $_GET['page'] : 1;
 $start = ($page-1) * $perPage;
 
 // 게시글 쿼리 
-$postsSql = "SELECT P.post_id, P.post_title, P.team_id, P.post_content, M.member_name, P.post_date, P.post_views FROM Posts P INNER JOIN Member M ON P.member_id = M.member_id WHERE P.BoardID = ? ORDER BY P.post_date DESC LIMIT ?, ?";
+$postsSql = "SELECT P.post_id, P.post_title, P.team_id, P.post_content, P.member_id, M.member_name, P.post_date, P.post_views FROM Posts P INNER JOIN Member M ON P.member_id = M.member_id WHERE P.BoardID = ? ORDER BY P.post_date DESC LIMIT ?, ?";
 $postsStmt = $conn->prepare($postsSql);
 $postsStmt->bind_param("iii", $board_id, $start, $perPage);
 $postsStmt->execute();
@@ -106,7 +107,6 @@ $result = $postsStmt->get_result();
                 <div class="count">조회</div>
             </div>
             <?php
-             session_start();  // 세션 시작
            $count = 0; //카운트 변수
            while($row = $result->fetch_assoc()) {
                $team_stmt = $conn->prepare("SELECT team_name FROM Teams WHERE team_id = ?");
@@ -123,9 +123,9 @@ $result = $postsStmt->get_result();
                echo "<div class='writer'>" . $row["member_name"] . "</div>"; // member_name 출력
                echo "<div class='date'>" . $row["post_date"] . "</div>";
                echo "<div class='count'>" . $row["post_views"] . "</div>";
-               if (isset($_SESSION['member_admin']) && $_SESSION['member_admin'] == true) {
-                echo "<div class='delete'><a href='post_delete.php?post_id=" . $row["post_id"] . "'>Delete</a></div>"; // 관리자인 경우에만 삭제 링크 표시
-            }
+               if ((isset($_SESSION['member_id']) && $_SESSION['member_id'] == $row['member_id']) || (isset($_SESSION['member_admin']) && $_SESSION['member_admin'] == true)) {
+                echo "<div class='delete'><a href='post_delete.php?post_id=" . $row["post_id"] . "'>Delete</a></div>"; // 게시글 작성자 또는 관리자인 경우에만 삭제 링크 표시
+            }            
                echo "</div>";
                $count++;
            }

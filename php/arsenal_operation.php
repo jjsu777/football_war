@@ -134,13 +134,19 @@ $result = $postsStmt->get_result();
             </div>
             <div class="board_page">
         <?php
-            for($i = 1; $i <= $totalPages; $i++){
-            if($i == $page){
-            echo '<a href="?board_id='.$board_id.'&page='.$i.'" class="num on">'.$i.'</a> ';
-                } else {
-                echo '<a href="?board_id='.$board_id.'&page='.$i.'" class="num">'.$i.'</a> ';
-                }
+             for($i = 1; $i <= $totalPages; $i++){
+                if($i == $page){
+                // echo '<a href="?board_id='.$board_id.'&page='.$i.'" class="num on">'.$i.'</a> ';
+                //     } else {
+                //     echo '<a href="?board_id='.$board_id.'&page='.$i.'" class="num">'.$i.'</a> ';
+                //     }
+                // }
+    
+                echo '<a href="?board_id='.$board_id.'&page='.$i.'&category_id='.$category_id.'" class="num on">'.$i.'</a> ';
+            } else {
+            echo '<a href="?board_id='.$board_id.'&page='.$i.'&category_id='.$category_id.'" class="num">'.$i.'</a> ';
             }
+        }
             ?>
             </div>
 

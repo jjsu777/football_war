@@ -11,6 +11,7 @@ if ($conn->connect_error) {
 
 // 게시판 id를 url parameter에서 가져옴
 $board_id = $_GET["board_id"]; 
+$category_id = $_GET["category_id"];
 
 // 페이지당 게시글 수
 $perPage = 5;
@@ -136,11 +137,17 @@ $result = $postsStmt->get_result();
         <?php
             for($i = 1; $i <= $totalPages; $i++){
             if($i == $page){
-            echo '<a href="?board_id='.$board_id.'&page='.$i.'" class="num on">'.$i.'</a> ';
-                } else {
-                echo '<a href="?board_id='.$board_id.'&page='.$i.'" class="num">'.$i.'</a> ';
-                }
-            }
+            // echo '<a href="?board_id='.$board_id.'&page='.$i.'" class="num on">'.$i.'</a> ';
+            //     } else {
+            //     echo '<a href="?board_id='.$board_id.'&page='.$i.'" class="num">'.$i.'</a> ';
+            //     }
+            // }
+
+            echo '<a href="?board_id='.$board_id.'&page='.$i.'&category_id='.$category_id.'" class="num on">'.$i.'</a> ';
+        } else {
+        echo '<a href="?board_id='.$board_id.'&page='.$i.'&category_id='.$category_id.'" class="num">'.$i.'</a> ';
+        }
+    }
             ?>
             </div>
 

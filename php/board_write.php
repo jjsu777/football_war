@@ -29,8 +29,16 @@ if ($category_id == 1) {
 } else if ($category_id == 8) {
     $stmt = $conn->prepare("SELECT team_id, team_name FROM Teams WHERE team_id IN (7)");
 }
+else {
+    die("Invalid category ID");
+}
 
 $stmt->execute();
+
+if ($stmt->error) {
+    die("Execution error: " . $stmt->error);
+}
+
 $result = $stmt->get_result();
 
 // 가져온 결과를 배열로 저장

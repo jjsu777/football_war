@@ -133,23 +133,38 @@ $result = $postsStmt->get_result();
             ?>
         </div>
             </div>
-            <div class="board_page">
-        <?php
-            for($i = 1; $i <= $totalPages; $i++){
-            if($i == $page){
-            // echo '<a href="?board_id='.$board_id.'&page='.$i.'" class="num on">'.$i.'</a> ';
-            //     } else {
-            //     echo '<a href="?board_id='.$board_id.'&page='.$i.'" class="num">'.$i.'</a> ';
-            //     }
-            // }
+            <<div class="board_page">
+    <?php
+        // 페이지 그룹의 시작과 끝 계산
+        $startPage = floor(($page - 1) / 5) * 5 + 1;
+        $endPage = min($startPage + 4, $totalPages);
 
-            echo '<a href="?board_id='.$board_id.'&page='.$i.'&category_id='.$category_id.'" class="num on">'.$i.'</a> ';
-        } else {
-        echo '<a href="?board_id='.$board_id.'&page='.$i.'&category_id='.$category_id.'" class="num">'.$i.'</a> ';
+        // 맨 처음 페이지로 이동
+        echo '<a href="?board_id='.$board_id.'&page=1&category_id='.$category_id.'" class="num"><<</a> ';
+
+        // 이전 페이지로 이동
+        if($startPage > 1) {
+            echo '<a href="?board_id='.$board_id.'&page='.($startPage - 5).'&category_id='.$category_id.'" class="num"><</a> ';
         }
-    }
-            ?>
-            </div>
+
+        for($i = $startPage; $i <= $endPage; $i++){
+            if($i == $page){
+                echo '<a href="?board_id='.$board_id.'&page='.$i.'&category_id='.$category_id.'" class="num on">'.$i.'</a> ';
+            } else {
+                echo '<a href="?board_id='.$board_id.'&page='.$i.'&category_id='.$category_id.'" class="num">'.$i.'</a> ';
+            }
+        }
+
+        // 다음 페이지로 이동
+        if($endPage < $totalPages) {
+            echo '<a href="?board_id='.$board_id.'&page='.($startPage + 5).'&category_id='.$category_id.'" class="num">></a> ';
+        }
+
+        // 맨 마지막 페이지로 이동
+        echo '<a href="?board_id='.$board_id.'&page='.$totalPages.'&category_id='.$category_id.'" class="num">>></a> ';
+    ?>
+</div>
+
 
             <div class="board-controls">
             <div class="bt_write">

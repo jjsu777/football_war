@@ -28,9 +28,8 @@ if ($category_id == 1) {
     $stmt = $conn->prepare("SELECT team_id, team_name FROM Teams WHERE team_id IN (6)"); 
 } else if ($category_id == 8) {
     $stmt = $conn->prepare("SELECT team_id, team_name FROM Teams WHERE team_id IN (7)");
-}
-else {
-    die("Invalid category ID");
+} else {
+    $stmt = $conn->prepare("SELECT team_id, team_name FROM Teams");
 }
 
 $stmt->execute();

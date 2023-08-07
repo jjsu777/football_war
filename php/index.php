@@ -31,7 +31,7 @@
         <li><a href="../php/index.php">홈</a></li>
         <li><a href="#">해축전 설명서</a></li>
         <li><a href="#">팀 정보</a></li>
-        <li><a href="#">전쟁터</a></li>
+        <li><a href="#">전쟁터 현황</a></li>
     </ul>
 </div>
 
@@ -93,14 +93,19 @@
                 $currentCategoryId = $row['CategoryID'];
             }
             //echo "<li><a href='".$row['BoardURL'].".php?board_id=".$row['BoardID']."'>".$row['BoardName']."</a></li>";
-            echo "<li><a href='".$row['BoardURL'].".php?board_id=".$row['BoardID']."&category_id=".$row['CategoryID']."'>".$row['BoardName']."</a></li>";
-
+           echo "<li><a href='".$row['BoardURL'].".php?board_id=".$row['BoardID']."&category_id=".$row['CategoryID']."'>".$row['BoardName']."</a></li>";
         }
         echo "</ul>"; // 마지막 카테고리의 목록 닫기
         echo "</div>"; // 게시판 목록 닫기
+
+        if (isset($_SESSION['member_admin']) && $_SESSION['member_admin'] == true) {
+            echo "<a href='create_board.php'><button>전쟁터 생성</button></a>";
+            echo "<a href='delete_board.php'><button>전쟁터 삭제</button></a>";            
+        }
     } else {
         echo "No results"; // 결과가 없는 경우 출력
     }
+    
 
     $conn->close();
     ?>
@@ -212,18 +217,21 @@
 
     <div class="topic">
         <div class="hot-topic">
-            <h2>오늘의 화제</h2>
-            <ul>
-                <li><a href="#">화제의 게시글1</a></li>
-                <li><a href="#">화제의 게시글2</a></li>
-                <li><a href="#">화제의 게시글3</a></li>
-                <li><a href="#">화제의 게시글3</a></li>
-                <li><a href="#">화제의 게시글3</a></li>
-                <li><a href="#">화제의 게시글3</a></li>
-                <li><a href="#">화제의 게시글3</a></li>
-                <li><a href="#">화제의 게시글3</a></li>
-                <li><a href="#">화제의 게시글3</a></li>
-            </ul>
+         <h2>오늘의 화제</h2>
+        <ul>
+            <?php
+            $sql = "SELECT post_id, post_title FROM Posts WHERE post_views >= 10 ORDER BY post_views DESC LIMIT 10"; // 조회수가 10 이상인 게시글만 가져옴
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    echo "<li><a href='board_detail.php?post_id=" . $row['post_id'] . "'>" . $row['post_title'] . "</a></li>";
+                }
+            } else {
+                echo "<li>화제의 게시글이 없습니다.</li>";
+            }
+            ?>
+        </ul>
         </div>
 
         <div class="free-board">
@@ -287,7 +295,6 @@ while($row = $result->fetch_assoc()) {
     $count++;
 } 
 ?>
-
             </ul>
         </div>
     </div>

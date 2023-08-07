@@ -43,7 +43,14 @@ $postsStmt->bind_param("iii", $board_id, $start, $perPage);
 $postsStmt->execute();
 $result = $postsStmt->get_result();
 
+// 게시판 정보 쿼리
+$boardSql = "SELECT B.CategoryName, L.BoardName FROM Board_category B INNER JOIN Board_list L ON B.CategoryID = L.CategoryID WHERE L.BoardID = ?";
+$boardStmt = $conn->prepare($boardSql);
+$boardStmt->bind_param("i", $board_id);
+$boardStmt->execute();
+$boardResult = $boardStmt->get_result();
 
+$boardRow = $boardResult->fetch_assoc();
 
 // $stmt = $conn->prepare("SELECT post_id, post_title, post_content, member_id, post_date, post_views FROM Posts");
 // $stmt->execute();
@@ -95,8 +102,8 @@ $result = $postsStmt->get_result();
 <!-- 게시판 섹션 시작 -->
 <div class="board_wrap">
     <div class="board_title">
-        <Strong>DMZ 공동경비구역</Strong>
-        <p>자유롭게 이야기하는 곳</p>
+        <Strong>전쟁터</Strong>
+        <p><?php echo $boardRow["BoardName"]; ?></p>
     </div>
     <div class="board_list_wrap">
         <div class="board_list">
@@ -164,6 +171,8 @@ $result = $postsStmt->get_result();
         echo '<a href="?board_id='.$board_id.'&page='.$totalPages.'&category_id='.$category_id.'" class="num">>></a> ';
     ?>
 </div>
+
+
             <div class="board-controls">
             <div class="bt_write">
         <?php

@@ -17,9 +17,11 @@ $category_id = $_GET["category_id"];
 $perPage = 5;
 
 // 총 게시글 수를 가져오는 쿼리
-$totalPostsSql = "SELECT COUNT(*) as cnt FROM Posts WHERE BoardID = ?";
+//$totalPostsSql = "SELECT COUNT(*) as cnt FROM Posts WHERE BoardID = ? AND post_views >= 10";
+// 총 게시글 수를 가져오는 쿼리
+$totalPostsSql = "SELECT COUNT(*) as cnt FROM Posts WHERE post_views >= 10";
 $totalPostsStmt = $conn->prepare($totalPostsSql);
-$totalPostsStmt->bind_param("i", $board_id);
+//$totalPostsStmt->bind_param("i", $board_id);
 $totalPostsStmt->execute();
 $totalPostsResult = $totalPostsStmt->get_result();
 $totalPostsRow = $totalPostsResult->fetch_assoc();
@@ -37,13 +39,13 @@ $page = (isset($_GET['page']) && !empty($_GET['page'])) ? $_GET['page'] : 1;
 $start = ($page-1) * $perPage;
 
 // 게시글 쿼리 
-$postsSql = "SELECT P.post_id, P.post_title, P.team_id, P.post_content, P.member_id, M.member_name, P.post_date, P.post_views FROM Posts P INNER JOIN Member M ON P.member_id = M.member_id WHERE P.BoardID = ? ORDER BY P.post_date DESC LIMIT ?, ?";
+//$postsSql = "SELECT P.post_id, P.post_title, P.team_id, P.post_content, P.member_id, M.member_name, P.post_date, P.post_views FROM Posts P INNER JOIN Member M ON P.member_id = M.member_id WHERE P.BoardID = ? AND P.post_views >= 10 ORDER BY P.post_date DESC LIMIT ?, ?";
+// 게시글 쿼리 
+$postsSql = "SELECT P.post_id, P.post_title, P.team_id, P.post_content, P.member_id, M.member_name, P.post_date, P.post_views FROM Posts P INNER JOIN Member M ON P.member_id = M.member_id WHERE P.post_views >= 10 ORDER BY P.post_date DESC LIMIT ?, ?";
 $postsStmt = $conn->prepare($postsSql);
-$postsStmt->bind_param("iii", $board_id, $start, $perPage);
+$postsStmt->bind_param("ii", $start, $perPage);
 $postsStmt->execute();
-$result = $postsStmt->get_result();
-
-
+$result = $postsStmt->get_result()
 
 // $stmt = $conn->prepare("SELECT post_id, post_title, post_content, member_id, post_date, post_views FROM Posts");
 // $stmt->execute();
@@ -52,7 +54,6 @@ $result = $postsStmt->get_result();
 // $stmt = $conn->prepare("SELECT P.post_id, P.post_title, P.post_content, M.member_name, P.post_date, P.post_views FROM Posts P INNER JOIN Member M ON P.member_id = M.member_id");
 // $stmt->execute();
 // $result = $stmt->get_result();
-
 
 ?>
 
@@ -95,8 +96,8 @@ $result = $postsStmt->get_result();
 <!-- 게시판 섹션 시작 -->
 <div class="board_wrap">
     <div class="board_title">
-        <Strong>DMZ 공동경비구역</Strong>
-        <p>자유롭게 이야기하는 곳</p>
+        <Strong>오늘의 화제</Strong>
+        <p>인기글</p>
     </div>
     <div class="board_list_wrap">
         <div class="board_list">
@@ -165,16 +166,7 @@ $result = $postsStmt->get_result();
     ?>
 </div>
             <div class="board-controls">
-            <div class="bt_write">
-        <?php
-            if(isset($_SESSION['member_id'])) {
-            $board_id = $_GET["board_id"];  // URL의 board_id 값을 가져옴
-            $category_id = $_GET["category_id"];  // URL의 category_id 값을 가져옴
-            ?>
-        <a href="board_write.php?board_id=<?php echo $board_id; ?>&category_id=<?php echo $category_id; ?>" class="on">글쓰기</a>
-        <?php
-        }
-        ?>
+           
         </div>
                 <div class="board-search">
                     <form action="#">

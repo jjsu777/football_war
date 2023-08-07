@@ -132,7 +132,6 @@ $stmt->execute();
     $commentsStmt->execute();
     $commentsResult = $commentsStmt->get_result();
 
-
     // 댓글 출력
         while ($commentsRow = $commentsResult->fetch_assoc()) {
         echo "<div class='comment'>";
@@ -148,7 +147,6 @@ $stmt->execute();
     }
     echo "</div>";
 }
-
 ?>
             </div>
             <!-- 댓글 섹션 끝 -->

@@ -44,6 +44,11 @@ $stmt->execute();
     <title>축구는 전쟁이다</title>
     <link rel="stylesheet" href="../css/board_write_style.css">
 </head>
+<style>
+        .sub_comment {
+            margin-left: 30px;
+        }
+    </style>
 <body>
   <header>
     <div class="logo"></div>
@@ -119,6 +124,7 @@ $stmt->execute();
                 <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
                 <textarea name="comment_content" cols="80" rows="5" required></textarea>
                 <input type="submit" name="submit_comment" value="댓글 작성">
+                
             </form>
             <!-- 댓글 섹션 시작 -->
             <div class="comments_section">
@@ -132,12 +138,41 @@ $stmt->execute();
     $commentsStmt->execute();
     $commentsResult = $commentsStmt->get_result();
 
-    // 댓글 출력
-        while ($commentsRow = $commentsResult->fetch_assoc()) {
+    while ($commentsRow = $commentsResult->fetch_assoc()) {
         echo "<div class='comment'>";
         echo "<p>" . $commentsRow["member_name"] . " (" . $commentsRow["comment_date"] . "):</p>";
         echo "<p>" . $commentsRow["comment_content"] . "</p>";
-
+        
+        // 대댓글 출력
+        $subCommentsSql = "SELECT C.comment_id, C.comment_content, M.member_name, C.comment_date FROM Comments C INNER JOIN Member M ON C.member_id = M.member_id WHERE C.parent_comment_id = ? ORDER BY C.comment_date ASC";
+        $subCommentsStmt = $conn->prepare($subCommentsSql);
+        $subCommentsStmt->bind_param("i", $commentsRow["comment_id"]);
+        $subCommentsStmt->execute();
+        $subCommentsResult = $subCommentsStmt->get_result();
+        while ($subCommentRow = $subCommentsResult->fetch_assoc()) {
+            echo "<div class='sub_comment'>";
+            echo "<p>" . $subCommentRow["member_name"] . " (" . $subCommentRow["comment_date"] . "):</p>";
+            echo "<p>" . $subCommentRow["comment_content"] . "</p>";
+             // 현재 사용자가 대댓글 작성자이거나 관리자인 경우에만 삭제 버튼 표시
+             if (isset($_SESSION['member_id']) && ($_SESSION['member_id'] == $commentsRow['member_id'] || (isset($_SESSION['member_admin']) && $_SESSION['member_admin'] == 1))) {
+                echo "<form action='comment_delete.php' method='POST'>";
+                echo "<input type='hidden' name='subcomment_id' value='" . $subCommentRow["comment_id"] . "'>";
+                echo "<input type='submit' name='delete_subcomment' value='대댓글 삭제'>";
+                echo "</form>";
+            }            
+            echo "</div>";
+        }
+        
+        if (isset($_SESSION['member_id'])) {
+            echo "<form action='subcomment_insert.php' method='POST'>";
+            echo "<input type='hidden' name='comment_member_id' value='" . $_SESSION['member_id'] . "'>";
+            echo "<input type='hidden' name='parent_comment_id' value='" . $commentsRow["comment_id"] . "'>";
+            echo "<textarea name='subcomment_content' cols='60' rows='3' placeholder='대댓글 작성...'></textarea>";
+            echo "<input type='submit' name='submit_subcomment' value='대댓글 작성'>";
+            echo "</form>";
+        }
+                
+        echo "</div>";
     // 현재 사용자가 댓글 작성자이거나 관리자인 경우에만 삭제 버튼 표시
     if (isset($_SESSION['member_id']) && ($_SESSION['member_id'] == $commentsRow['member_id'] || $_SESSION['member_admin'] == 1)) {
         echo "<form action='comment_delete.php' method='POST'>";
@@ -145,6 +180,7 @@ $stmt->execute();
         echo "<input type='submit' name='delete_comment' value='댓글 삭제'>";
         echo "</form>";
     }
+    
     echo "</div>";
 }
 ?>
